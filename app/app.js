@@ -10,6 +10,7 @@ var User = require('./models/user');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var authenticate = require('./routes/authenticate');
 
 var app = express();
 
@@ -24,16 +25,15 @@ app.set('superSecret', config.secret);
 mongoose.connect(config.database);
 
 // =======
-// Initialize user for test
-// create a sample user
-var nick = new User({
-  name: 'Nick Cerminara',
-  password: 'password',
+// Initialize an admin user
+var admin = new User({
+  name: 'admin',
+  password: 'admin',
   admin: true
 });
 
 // save the sample user
-nick.save(function(err) {
+admin.save(function(err) {
   if (err) throw err;
 
   console.log('User saved successfully');
@@ -46,5 +46,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
+app.use('/authenticate', authenticate);
 
 module.exports = app;
