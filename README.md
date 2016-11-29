@@ -1,4 +1,4 @@
-# sprint-users
+# race-users
 A Node.js web API.
 
 ## Frameworks
