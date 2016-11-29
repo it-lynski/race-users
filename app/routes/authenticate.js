@@ -15,7 +15,7 @@ router.post('/', function(req, res, next) {
     if (err) throw err;
 
     if (!user) {
-      res.status(401).send({
+      return res.status(401).send({
         success: false,
         message: 'Authentication failed. User not found.'
       });
@@ -24,7 +24,7 @@ router.post('/', function(req, res, next) {
 
       // check if password matches
       if (user.password != req.body.password) {
-        res.status(401).send({
+        return res.status(401).send({
           success: false,
           message: 'Authentication failed. Wrong password.'
         });
@@ -36,7 +36,7 @@ router.post('/', function(req, res, next) {
         var token = jwt.sign({ user: user.name }, config.secret);
 
         // return the information including token as JSON
-        res.status(200).send({
+        return res.status(200).send({
           success: true,
           message: 'Enjoy your token!',
           token: token

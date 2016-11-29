@@ -11,6 +11,7 @@ var User = require('./models/user');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var authenticate = require('./routes/authenticate');
+var verifyToken = require('./routes/verifyToken');
 
 var app = express();
 
@@ -44,8 +45,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// API ROUTES ---------------------------------
+
+// Unprotected routes:
 app.use('/', index);
-app.use('/users', users);
 app.use('/authenticate', authenticate);
+// Middleware to verify jwt
+app.use(verifyToken);
+// Protected routes:
+app.use('/users', users);
 
 module.exports = app;
