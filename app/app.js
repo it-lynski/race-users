@@ -10,7 +10,9 @@ var User = require('./models/user');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var authenticate = require('./routes/authenticate');
-var verifyToken = require('./routes/verifyToken');
+var verify = require('./routes/verify');
+
+var verifyToken = require('./middleware/verifyToken');
 
 var app = express();
 
@@ -52,6 +54,7 @@ app.use('/authenticate', authenticate);
 // Middleware to verify jwt
 app.use(verifyToken);
 // Protected routes:
+app.use('/verify', verify)
 app.use('/users', users);
 
 module.exports = app;
