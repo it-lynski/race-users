@@ -4,7 +4,6 @@ var logger = require('morgan');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
-var jwt = require('jsonwebtoken');
 var config = require('./config');
 var User = require('./models/user');
 

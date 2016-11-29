@@ -26,3 +26,6 @@ https://blog.rendle.io/doing-one-thing-with-microservices/
 
 jwt should be sent in the Authorization header using the Bearer schema:
 https://jwt.io/introduction/
+
+On express folder structure best practices:
+https://www.terlici.com/2014/08/25/best-practices-express-structure.html
