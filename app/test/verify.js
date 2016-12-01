@@ -10,7 +10,7 @@ describe('Verify', function () {
     .get('/verify')
     .end(function (err, res) {
       if (err) {
-        console.log(err.stack)
+        // console.log(err.stack)
       }
       res.should.have.status(401)
       done()
@@ -22,7 +22,7 @@ describe('Verify', function () {
     .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiYWRtaW4iLCJpYXQiOjE0ODA0MTMzNDF9.w_JdqyRZ6qRM7itm6Xp03_t5YaD4tHFh4PNgtsShHEI')
     .end(function (err, res) {
       if (err) {
-        console.log(err.stack)
+        // console.log(err.stack)
       }
       res.should.have.status(200)
       res.should.be.json
