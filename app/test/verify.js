@@ -1,4 +1,4 @@
-/* global describe it */
+/* eslint-env node, mocha */
 var chai = require('chai')
 var chaiHttp = require('chai-http')
 

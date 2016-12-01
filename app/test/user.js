@@ -1,6 +1,9 @@
-/* global describe it */
+/* eslint-env chai, mocha */
+/* eslint-disable no-unused-vars */
+
 var chai = require('chai')
 var chaiHttp = require('chai-http')
+var should = chai.should()
 
 chai.use(chaiHttp)
 
