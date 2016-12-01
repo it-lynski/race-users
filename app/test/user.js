@@ -52,7 +52,20 @@ describe('Users', function () {
       done()
     })
   })
-  it('should add a SINGLE blob on /blobs POST')
+  it('should add a SINGLE user on /users POST', function (done) {
+    chai.request('http://localhost:3000')
+    .post('/users')
+    .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiYWRtaW4iLCJpYXQiOjE0ODA0MTMzNDF9.w_JdqyRZ6qRM7itm6Xp03_t5YaD4tHFh4PNgtsShHEI')
+    .send({ name: 'test15', password: 'test' })
+    .end(function (err, res) {
+      if (err) {
+        console.log(err.stack)
+      }
+      res.should.have.status(201)
+      res.should.have.header('location')
+      done()
+    })
+  })
   it('should update a SINGLE blob on /blob/<id> PUT')
   it('should delete a SINGLE blob on /blob/<id> DELETE')
 })
