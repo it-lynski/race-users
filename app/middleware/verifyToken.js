@@ -5,6 +5,7 @@ var config = require('./../config')
 
 /* GET users listing. */
 router.use(function (req, res, next) {
+  console.log('In verifyToken module')
   // Guard clauses
   var authorization = req.headers.authorization
   if (!authorization || !(authorization.search('Bearer ') === 0)) {

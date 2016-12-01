@@ -36,9 +36,17 @@ var admin = new User({
 
 // save the sample user
 admin.save(function (err) {
-  if (err) throw err
-
-  console.log('User saved successfully')
+  if (err) {
+    // check for duplicate key error
+    if (err.code === 11000) {
+      ;
+    } else {
+      // A general error (db, crypto, etc…)
+      throw err
+    }
+  } else {
+    console.log('User saved successfully')
+  }
 })
 
 // use body parser so we can get info from POST and/or URL parameters
