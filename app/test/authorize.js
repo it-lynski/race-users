@@ -1,11 +1,11 @@
-var chai = require('chai');
-var chaiHttp = require('chai-http');
-var should = chai.should();
+/* global describe it */
+var chai = require('chai')
+var chaiHttp = require('chai-http')
 
-chai.use(chaiHttp);
+chai.use(chaiHttp)
 
-describe('Authorize', function() {
-  it('should not authorize an unknown user /authorize POST');
-  it('should not authorize user with wrong password /authorize POST');
-  it('should authorize an existing user with correct password /authorize POST');
-});
+describe('Authorize', function () {
+  it('should not authorize an unknown user /authorize POST')
+  it('should not authorize user with wrong password /authorize POST')
+  it('should authorize an existing user with correct password /authorize POST')
+})
