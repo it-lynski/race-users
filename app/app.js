@@ -24,6 +24,7 @@ app.use(logger('dev'))
 // ===================
 console.log('config', config.database)
 app.set('superSecret', config.secret)
+mongoose.Promise = global.Promise
 mongoose.connect(config.database)
 
 // =======
