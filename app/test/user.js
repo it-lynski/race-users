@@ -4,10 +4,48 @@
 var chai = require('chai')
 var chaiHttp = require('chai-http')
 var should = chai.should()
+var TestUser = require('../models/user')
 
 chai.use(chaiHttp)
 
 describe('Users', function () {
+  before(function () {
+    // runs before all tests in this block
+    console.log('Before')
+    // Do some development specific set up:
+    // =======
+    // Initializ  e an test user
+    var test = new TestUser({
+      name: 'test',
+      password: 'test',
+      test: true
+    })
+
+    // save the sample user
+    test.save(function (err) {
+      if (err) {
+        // check for duplicate key error
+        if (err.code === 11000) {
+          ;
+        } else {
+          // A general error (db, crypto, etc…)
+          throw err
+        }
+      } else {
+        console.log('User saved successfully')
+      }
+    })
+  })
+  after(function () {
+    console.log('After')
+    TestUser.findOne({'name': 'test'}, function (err, users) {
+      if (err) {
+        console.log('Err', err)
+      } else {
+        console.log('Removed!')
+      }
+    })
+  })
   it('should return 401 on request with no valid jwt', function (done) {
     chai.request('http://localhost:3000')
     .get('/users')
@@ -35,7 +73,7 @@ describe('Users', function () {
   })
   it('should list a SINGLE user on /user/<name> GET', function (done) {
     chai.request('http://localhost:3000')
-    .get('/users/admin')
+    .get('/users/test')
     .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiYWRtaW4iLCJpYXQiOjE0ODA0MTMzNDF9.w_JdqyRZ6qRM7itm6Xp03_t5YaD4tHFh4PNgtsShHEI')
     .end(function (err, res) {
       if (err) {
@@ -46,9 +84,9 @@ describe('Users', function () {
       res.body.should.be.a('object')
       res.body.should.have.property('name')
       res.body.should.have.property('_id')
-      res.body.name.should.equal('admin')
+      res.body.name.should.equal('test')
       res.body.should.have.property('password')
-      res.body.should.have.property('admin')
+      res.body.should.have.property('test')
       done()
     })
   })
