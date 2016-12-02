@@ -31,17 +31,8 @@ console.log('config', config.database)
 
 var mongoose = require('mongoose')
 mongoose.Promise = global.Promise
-
-if (env === 'development') {
-  // Do some development specific set up:
-  var mockgoose = require('mockgoose')
-  mockgoose(mongoose).then(function () {
-    // mongoose connection
-    mongoose.connect(config.database)
-  })
-} else {
-  mongoose.connect(config.database)
-}
+// mongoose connection
+mongoose.connect(config.database)
 // =======
 // Initialize an admin user
 var admin = new User({

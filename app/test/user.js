@@ -7,9 +7,12 @@ var should = chai.should()
 var TestUser = require('../models/user')
 
 chai.use(chaiHttp)
+var mongoose = require('mongoose')
+// tell Mongoose to use a different DB - created on the fly
 
+mongoose.connect('mongodb://mongodb/users-development')
 describe('Users', function () {
-  before(function () {
+  beforeEach(function () {
     // runs before all tests in this block
     console.log('Before')
     // Do some development specific set up:
@@ -18,7 +21,7 @@ describe('Users', function () {
     var test = new TestUser({
       name: 'test',
       password: 'test',
-      test: true
+      admin: true
     })
 
     // save the sample user
@@ -26,7 +29,7 @@ describe('Users', function () {
       if (err) {
         // check for duplicate key error
         if (err.code === 11000) {
-          ;
+          console.log('User already exist', test)
         } else {
           // A general error (db, crypto, etc…)
           throw err
@@ -36,13 +39,13 @@ describe('Users', function () {
       }
     })
   })
-  after(function () {
+  afterEach(function () {
     console.log('After')
-    TestUser.findOne({'name': 'test'}, function (err, users) {
+    TestUser.remove({'name': 'test'}, function (err, users) {
       if (err) {
         console.log('Err', err)
       } else {
-        console.log('Removed!')
+        console.log('Removed')
       }
     })
   })
@@ -77,7 +80,7 @@ describe('Users', function () {
     .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiYWRtaW4iLCJpYXQiOjE0ODA0MTMzNDF9.w_JdqyRZ6qRM7itm6Xp03_t5YaD4tHFh4PNgtsShHEI')
     .end(function (err, res) {
       if (err) {
-        console.log(err.stack)
+        // console.log(err.stack)
       }
       res.should.have.status(200)
       res.should.be.json
@@ -86,7 +89,7 @@ describe('Users', function () {
       res.body.should.have.property('_id')
       res.body.name.should.equal('test')
       res.body.should.have.property('password')
-      res.body.should.have.property('test')
+      res.body.should.have.property('admin')
       done()
     })
   })
@@ -94,10 +97,10 @@ describe('Users', function () {
     chai.request('http://localhost:3000')
     .post('/users')
     .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiYWRtaW4iLCJpYXQiOjE0ODA0MTMzNDF9.w_JdqyRZ6qRM7itm6Xp03_t5YaD4tHFh4PNgtsShHEI')
-    .send({ name: 'test15', password: 'test' })
+    .send({ name: 'test', password: 'test' })
     .end(function (err, res) {
       if (err) {
-        console.log(err.stack)
+        // console.log(err.stack)
       }
       res.should.have.status(201)
       res.should.have.header('location')
