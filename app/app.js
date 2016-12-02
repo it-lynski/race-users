@@ -2,9 +2,7 @@ var express = require('express')
 var path = require('path')
 var logger = require('morgan')
 var bodyParser = require('body-parser')
-var mongoose = require('mongoose')
 
-var config = require('./config')
 var User = require('./models/user')
 
 var index = require('./routes/index')
@@ -22,11 +20,28 @@ app.use(logger('dev'))
 // ===================
 // configuration
 // ===================
+var env = process.env.NODE_ENV || 'development'
+if (env === 'development') {
+  var config = require('./config_development')
+} else {
+  config = require('./config')
+}
+console.log('env:', env)
 console.log('config', config.database)
-app.set('superSecret', config.secret)
-mongoose.Promise = global.Promise
-mongoose.connect(config.database)
 
+var mongoose = require('mongoose')
+mongoose.Promise = global.Promise
+
+if (env === 'development') {
+  // Do some development specific set up:
+  var mockgoose = require('mockgoose')
+  mockgoose(mongoose).then(function () {
+    // mongoose connection
+    mongoose.connect(config.database)
+  })
+} else {
+  mongoose.connect(config.database)
+}
 // =======
 // Initialize an admin user
 var admin = new User({
@@ -49,6 +64,8 @@ admin.save(function (err) {
     console.log('User saved successfully')
   }
 })
+
+app.set('superSecret', config.secret)
 
 // use body parser so we can get info from POST and/or URL parameters
 app.use(bodyParser.json())
